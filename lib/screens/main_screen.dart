@@ -1,0 +1,56 @@
+import 'package:flutter/material.dart';
+
+import '../app_theme.dart';
+import '../widgets/shared/bottom_navbar.dart';
+import '../widgets/home_screen/home_tab.dart';
+import '../widgets/home_screen/search_tab.dart';
+
+class MainPage extends StatefulWidget {
+  const MainPage({super.key});
+
+  @override
+  State<MainPage> createState() => MainPageState();
+}
+
+class MainPageState extends State<MainPage> {
+  int pageIndex = 0;
+
+  @override
+  void initState(){
+    super.initState();
+  }
+
+  void handleTabChange(int index){
+    setState(() {
+      pageIndex = index;
+    });
+    print(index);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: AppTheme.darkBlue,
+
+      appBar: AppBar(
+        backgroundColor: AppTheme.deepBlue,
+        title: Text(
+          "MovieTrackr",
+          style: AppTheme.h1SemiboldOnMediumBlue,
+        ),
+      ),
+
+      body: IndexedStack(
+        index: pageIndex,
+        children: [
+          HomeTab(),
+          SearchTab(),
+          Text("PROFILE"),
+        ],
+      ),
+
+      bottomNavigationBar:
+      BottomNavBar(selectedIndex: pageIndex, onTabChange: handleTabChange),
+    );
+  }
+}

@@ -1,0 +1,59 @@
+name: movietrackr
+description: "An app for saving, rating and writing reviewing for your favorite scrollable_movie_lists"
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.11.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # The following adds the Cupertino Icons font to your application.
+  # Use with the CupertinoIcons class for iOS style icons.
+  cupertino_icons: ^1.0.8
+  flutter_dotenv: ^6.0.0
+  http: ^1.6.0
+  google_fonts: ^8.0.2
+  photo_view: ^0.15.0
+  google_nav_bar: ^5.0.7
+  country_flags: ^4.1.2
+  url_launcher: ^6.3.2
+  intl: ^0.20.2
+  font_awesome_flutter: ^11.0.0
+  flutter_launcher_icons: ^0.14.4
+  flutter_native_splash: ^2.4.7
+
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^6.0.0
+
+
+# The following section is specific to Flutter packages.
+flutter:
+  uses-material-design: true
+
+  assets:
+    - .env
+    - assets/icons/
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/icons/icon.png"
+#  adaptive_icon_foreground: "assets/icons/foreground.png"
+#  adaptive_icon_background: "assets/icons/background.png"
+#  remove_alpha_ios: true
+
+flutter_native_splash:
+  color: "#0b1320"
+#  image: "assets/icons/background.png"
+
+  android_12:
+    color: "#0b1320"
+#    image: "assets/icons/background.png"
