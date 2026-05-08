@@ -46,3 +46,7 @@ app.*.map.json
 
 # Enviroment variables
 .env*
+
+# Firebase
+firebase.json
+lib/firebase_options.dart
