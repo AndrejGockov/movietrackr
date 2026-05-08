@@ -7,14 +7,14 @@ import '../widgets/shared/scrollable_movie_lists/shared/movie_grid.dart';
 
 import 'package:movietrackr/services/movies_service.dart';
 
-class SeeMoreScreen extends StatefulWidget {
-  const SeeMoreScreen({super.key});
+class SeeMorePage extends StatefulWidget {
+  const SeeMorePage({super.key});
 
   @override
-  State<SeeMoreScreen> createState() => _SeeMoreScreenState();
+  State<SeeMorePage> createState() => _SeeMorePageState();
 }
 
-class _SeeMoreScreenState extends State<SeeMoreScreen> {
+class _SeeMorePageState extends State<SeeMorePage> {
   late String title = '';
   late String path = '';
   late int currentPage = 1;

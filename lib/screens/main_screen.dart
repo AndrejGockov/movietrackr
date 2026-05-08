@@ -5,6 +5,8 @@ import '../widgets/shared/bottom_navbar.dart';
 import '../widgets/home_screen/home_tab.dart';
 import '../widgets/home_screen/search_tab.dart';
 
+import '../widgets/shared/app_bar/app_bar.dart';
+
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
 
@@ -24,7 +26,6 @@ class MainPageState extends State<MainPage> {
     setState(() {
       pageIndex = index;
     });
-    print(index);
   }
 
   @override
@@ -32,13 +33,7 @@ class MainPageState extends State<MainPage> {
     return Scaffold(
       backgroundColor: AppTheme.darkBlue,
 
-      appBar: AppBar(
-        backgroundColor: AppTheme.deepBlue,
-        title: Text(
-          "MovieTrackr",
-          style: AppTheme.h1SemiboldOnMediumBlue,
-        ),
-      ),
+      appBar: CustomAppBar(),
 
       body: IndexedStack(
         index: pageIndex,
