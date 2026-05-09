@@ -42,6 +42,11 @@ class AppTheme{
   static const Color primaryYellow = Color(0xFFE6B800);
   static const Color primaryGreen = Color(0xFF3F9E4D);
 
+  static const Color linkPrimary = Color(0xFF7BB3E0);
+  static const Color linkSecondary = Color(0xFF5D9BC7);
+  static const Color linkTertiary = Color(0xFF9BB8D5);
+  static const Color linkHover = Color(0xFFA3C8ED);
+
   // ================
   //      FONTS
   // ================
@@ -98,6 +103,18 @@ class AppTheme{
     fontSize: 12,
     fontWeight: FontWeight.w600,
     color: primaryGreen,
+  );
+
+  static TextStyle h5SemiboldLinkSecondary = GoogleFonts.montserrat(
+    fontSize: 14,
+    fontWeight: FontWeight.w600,
+    color: linkSecondary,
+  );
+
+  static TextStyle h6SemiboldLinkSecondary = GoogleFonts.montserrat(
+    fontSize: 12,
+    fontWeight: FontWeight.w600,
+    color: linkSecondary,
   );
 
   // // For darkBlue background

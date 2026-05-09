@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:movietrackr/widgets/home_screen/profile_tab.dart';
 
 import '../app_theme.dart';
-import '../widgets/shared/bottom_navbar.dart';
+import '../widgets/home_screen/bottom_navbar.dart';
 import '../widgets/home_screen/home_tab.dart';
 import '../widgets/home_screen/search_tab.dart';
 
@@ -40,7 +41,7 @@ class MainPageState extends State<MainPage> {
         children: [
           HomeTab(),
           SearchTab(),
-          Text("PROFILE"),
+          ProfileTab(),
         ],
       ),
 
