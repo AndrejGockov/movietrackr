@@ -1,7 +1,7 @@
 import 'package:country_flags/country_flags.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:movietrackr/widgets/movie_screen/shared/section_separator.dart';
+import 'package:movietrackr/widgets/shared/section_separator.dart';
 
 import '../../app_theme.dart';
 import '../../models/production_company.dart';

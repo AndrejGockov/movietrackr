@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:movietrackr/widgets/movie_screen/shared/section_separator.dart';
+import 'package:movietrackr/widgets/shared/section_separator.dart';
 import 'package:movietrackr/widgets/shared/image_viewer.dart';
 import 'package:movietrackr/widgets/shared/loading_screen.dart';
 

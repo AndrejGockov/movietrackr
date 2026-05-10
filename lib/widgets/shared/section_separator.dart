@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 
-import '../../../app_theme.dart';
+import '../../app_theme.dart';
 
 class SectionSeparator extends StatelessWidget {
   const SectionSeparator({super.key});

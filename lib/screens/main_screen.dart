@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:movietrackr/widgets/home_screen/profile_tab.dart';
+import 'package:movietrackr/widgets/shared/loading_screen.dart';
 
 import '../app_theme.dart';
+import '../services/auth_service.dart';
 import '../widgets/home_screen/bottom_navbar.dart';
 import '../widgets/home_screen/home_tab.dart';
 import '../widgets/home_screen/search_tab.dart';
@@ -31,22 +33,39 @@ class MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppTheme.darkBlue,
+    return ValueListenableBuilder(
+      valueListenable: authService,
+      builder: (context, authState, child) {
+        final user = authState.user;
 
-      appBar: CustomAppBar(),
+        if (user == null) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false);
+          });
 
-      body: IndexedStack(
-        index: pageIndex,
-        children: [
-          HomeTab(),
-          SearchTab(),
-          ProfileTab(),
-        ],
-      ),
+          return const Scaffold(
+            backgroundColor: AppTheme.darkBlue,
+            body: LoadingScreen(),
+          );
+        }
 
-      bottomNavigationBar:
-      BottomNavBar(selectedIndex: pageIndex, onTabChange: handleTabChange),
+        return Scaffold(
+          backgroundColor: AppTheme.darkBlue,
+          appBar: const CustomAppBar(),
+          body: IndexedStack(
+            index: pageIndex,
+            children: const [
+              HomeTab(),
+              SearchTab(),
+              ProfileTab(),
+            ],
+          ),
+          bottomNavigationBar: BottomNavBar(
+              selectedIndex: pageIndex,
+              onTabChange: handleTabChange
+          ),
+        );
+      },
     );
   }
 }

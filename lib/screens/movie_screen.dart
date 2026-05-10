@@ -10,7 +10,7 @@ import '../widgets/movie_screen/movie_info_section.dart';
 import '../widgets/movie_screen/movie_gallery_section.dart';
 import '../widgets/movie_screen/movie_genres_section.dart';
 import '../widgets/movie_screen/movie_tagline.dart';
-import '../widgets/movie_screen/shared/section_separator.dart';
+import '../widgets/shared/section_separator.dart';
 import '../widgets/shared/snackbars.dart';
 import '../widgets/shared/image_viewer.dart';
 import '../widgets/shared/loading_screen.dart';

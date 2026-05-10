@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:movietrackr/widgets/movie_screen/shared/section_separator.dart';
+import 'package:movietrackr/widgets/shared/section_separator.dart';
 
 import '../../app_theme.dart';
 import '../../models/genre.dart';
