@@ -45,6 +45,7 @@ class AuthService {
 
   Future<void> updateUsername({required String username}) async {
     await user!.updateDisplayName(username);
+    await user!.reload();
   }
 
   Future<void> resetPassword({required String email}) async {

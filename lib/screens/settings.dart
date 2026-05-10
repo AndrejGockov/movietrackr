@@ -4,6 +4,7 @@ import '../services/auth_service.dart';
 import '../widgets/settings_screen/delete_account_dialog.dart';
 import '../widgets/settings_screen/sign_out_dialog.dart';
 import '../widgets/settings_screen/settings_button.dart';
+import '../widgets/settings_screen/update_username_dialog.dart';
 import '../widgets/shared/loading_screen.dart';
 import '../widgets/shared/section_separator.dart';
 
@@ -15,6 +16,18 @@ class Settings extends StatefulWidget {
 }
 
 class _SettingsState extends State<Settings> {
+  void triggerUpdateUsernameFlow(String currentName) {
+    showDialog(
+      context: context,
+      builder: (context) => UpdateUsernameDialog(
+        currentName: currentName,
+        onConfirm: (newName) async {
+          await authService.value.updateUsername(username: newName);
+        },
+      ),
+    );
+  }
+
   void triggerSignOutFlow() {
     showDialog(
       context: context,
@@ -38,17 +51,18 @@ class _SettingsState extends State<Settings> {
       context: context,
       builder: (context) => DeleteAccountDialog(
         onConfirm: (email, password) async {
-          // This logic is passed into the modular dialog
           await authService.value.deleteAccount(
             email: email,
             password: password,
           );
-          if (mounted)
+
+          if (mounted) {
             Navigator.pushNamedAndRemoveUntil(
               context,
               '/login',
               (route) => false,
             );
+          }
         },
       ),
     );
@@ -88,29 +102,33 @@ class _SettingsState extends State<Settings> {
 
                 const SizedBox(height: AppTheme.xl),
 
-                Text(
-                  "Username:",
-                  style: AppTheme.h5SemiboldOnMediumBlue,
-                ),
+                Text("Username:", style: AppTheme.h5SemiboldOnMediumBlue),
 
-
-                GestureDetector(
-                  onTap: () async {
-                    Navigator.pushNamed(context, "/settings", arguments: {});
-                  },
-                  child: CircleAvatar(
-                    radius: AppTheme.md,
-                    backgroundColor: AppTheme.deepBlue.withOpacity(0.6),
-                    child: Icon(
-                      Icons.edit,
-                      size: AppTheme.lg,
-                      color: AppTheme.textOnMediumBlue,
+                Row(
+                  children: [
+                    Text(
+                      user.displayName ?? 'User',
+                      style: AppTheme.h4SemiboldOnMediumBlue,
                     ),
-                  ),
+                    const SizedBox(width: AppTheme.sm),
+                    GestureDetector(
+                      onTap: () =>
+                          triggerUpdateUsernameFlow(user.displayName ?? ''),
+                      child: CircleAvatar(
+                        radius: AppTheme.md,
+                        backgroundColor: AppTheme.deepBlue.withOpacity(0.6),
+                        child: Icon(
+                          Icons.edit,
+                          size: AppTheme.md,
+                          color: AppTheme.textOnMediumBlue,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
 
                 Text(
-                  user.displayName ?? 'User',
+                  user.email ?? 'email',
                   style: AppTheme.h4SemiboldOnMediumBlue,
                 ),
 

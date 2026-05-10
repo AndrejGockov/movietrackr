@@ -12,7 +12,7 @@ class SettingsButton extends StatelessWidget {
     required this.text,
     required this.textStyle,
     required this.onPressed,
-    this.backgroundColor = AppTheme.deepBlue, // Default color
+    this.backgroundColor = AppTheme.deepBlue,
   });
 
   @override
