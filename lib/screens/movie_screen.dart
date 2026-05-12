@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:intl/intl.dart';
+import 'package:movietrackr/services/auth_service.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../app_theme.dart';
+import '../models/review.dart';
 import '../models/movie.dart';
 import '../models/gallery.dart';
 import '../widgets/movie_screen/movie_details_section.dart';
@@ -15,6 +18,7 @@ import '../widgets/shared/snackbars.dart';
 import '../widgets/shared/image_viewer.dart';
 import '../widgets/shared/loading_screen.dart';
 import '../services/movies_service.dart';
+import '../services/review_service.dart';
 
 class MoviePage extends StatefulWidget {
   const MoviePage({super.key});
@@ -29,6 +33,17 @@ class _MoviePageState extends State<MoviePage> {
   late Movie movie;
   late Gallery gallery;
 
+  final TextEditingController commentController = TextEditingController();
+  double currentRating = 5.0;
+  bool isSubmitting = false;
+
+  List<Review> loadedReviews = [];
+  int currentLimit = 10;
+  bool hasMore = true;
+  bool isLoadingMore = false;
+
+  final DateFormat dateFormatter = DateFormat('dd.MM.yyyy');
+
   @override
   void initState() {
     super.initState();
@@ -39,6 +54,7 @@ class _MoviePageState extends State<MoviePage> {
     super.didChangeDependencies();
     movieId = ModalRoute.of(context)!.settings.arguments as int;
     loadMovie();
+    fetchReviews();
   }
 
   Future<void> loadMovie() async {
@@ -56,25 +72,23 @@ class _MoviePageState extends State<MoviePage> {
     }
   }
 
-  Future<void> openIMDBPage() async{
+  Future<void> openIMDBPage() async {
     if (movie.imdb_id.isEmpty) {
-      Snackbars.showErrorSnackbar(context,
-          'The IMDb page for this movie isn\'t available');
+      Snackbars.showErrorSnackbar(
+        context,
+        'The IMDb page for this movie isn\'t available',
+      );
       return;
     }
 
     final Uri uri = Uri.parse('https://www.imdb.com/title/${movie.imdb_id}');
 
-    if (!await launchUrl(
-      uri,
-      mode: LaunchMode.externalApplication,
-    )) {
-      Snackbars.showErrorSnackbar(context,
-          'Could not open the website');
+    if (!await launchUrl(uri, mode: LaunchMode.externalApplication)) {
+      Snackbars.showErrorSnackbar(context, 'Could not open the website');
     }
   }
 
-  Future<void> openMovieHomePage() async{
+  Future<void> openMovieHomePage() async {
     if (movie.homepage.isEmpty) {
       Snackbars.showErrorSnackbar(context, 'This website isn\'t available');
       return;
@@ -82,13 +96,77 @@ class _MoviePageState extends State<MoviePage> {
 
     final Uri uri = Uri.parse('${movie.homepage}');
 
-    if (!await launchUrl(
-      uri,
-      mode: LaunchMode.externalApplication,
-    )) {
-      Snackbars.showErrorSnackbar(context,
-          'Could not open the website');
+    if (!await launchUrl(uri, mode: LaunchMode.externalApplication)) {
+      Snackbars.showErrorSnackbar(context, 'Could not open the website');
     }
+  }
+
+  Future<void> submitReview() async {
+    if (commentController.text.trim().isEmpty) return;
+
+    setState(() => isSubmitting = true);
+
+    try {
+      final String currentUid = authService.value.user?.uid ?? '';
+      final String currentUsername = authService.value.user?.displayName ?? '';
+
+      final newReview = Review(
+        userId: currentUid,
+        username: currentUsername,
+        content: commentController.text.trim(),
+        rating: double.parse(currentRating.toStringAsFixed(1)),
+        // Save as decimal
+        timestamp: DateTime.now(),
+      );
+
+      await ReviewService.instance.postReview(movieId, newReview);
+
+      commentController.clear();
+      setState(() {
+        currentRating = 5.0;
+        isSubmitting = false;
+      });
+
+      fetchReviews();
+    } catch (e) {
+      setState(() => isSubmitting = false);
+      Snackbars.showErrorSnackbar(context, "Failed to post review");
+    }
+  }
+
+  Future<void> fetchReviews() async {
+    if (isLoadingMore) return;
+    setState(() => isLoadingMore = true);
+
+    final snapshot = await ReviewService.instance.getReviews(
+      movieId,
+      currentLimit,
+    );
+
+    if (snapshot.exists) {
+      final Map<dynamic, dynamic> data = snapshot.value as Map;
+      final List<Review> fetched =
+          data.values
+              .map((item) => Review.fromJson(Map<String, dynamic>.from(item)))
+              .toList()
+            ..sort((a, b) => b.timestamp.compareTo(a.timestamp));
+
+      setState(() {
+        loadedReviews = fetched;
+        // If we got fewer than the limit, we reached the end
+        hasMore = fetched.length == currentLimit;
+        isLoadingMore = false;
+      });
+    } else {
+      setState(() => isLoadingMore = false);
+    }
+  }
+
+  void loadMore() {
+    setState(() {
+      currentLimit += 10;
+    });
+    fetchReviews();
   }
 
   @override
@@ -227,9 +305,13 @@ class _MoviePageState extends State<MoviePage> {
                             horizontal: AppTheme.md,
                           ),
                           child: InfoSection(
-                            year: movie.release_date.year != 0 ? movie.release_date.year.toString() : '-',
+                            year: movie.release_date.year != 0
+                                ? movie.release_date.year.toString()
+                                : '-',
                             runtime: movie.runtime.toString(),
-                            genre: movie.genres.isNotEmpty ? movie.genres[0].name : '-',
+                            genre: movie.genres.isNotEmpty
+                                ? movie.genres[0].name
+                                : '-',
                           ),
                         ),
                       ],
@@ -292,51 +374,53 @@ class _MoviePageState extends State<MoviePage> {
 
                           // DETAILS
                           MovieDetails(
-                              budget: movie.budget,
-                              revenue: movie.revenue,
-                              status: movie.status,
-                              release_date: movie.release_date,
-                              production_companies: movie.production_companies,
-                              production_countries: movie.production_countries
+                            budget: movie.budget,
+                            revenue: movie.revenue,
+                            status: movie.status,
+                            release_date: movie.release_date,
+                            production_companies: movie.production_companies,
+                            production_countries: movie.production_countries,
                           ),
 
                           // Imdb and website link
                           Row(
                             children: [
                               IconButton(
-                                  padding: EdgeInsets.zero,
-                                  constraints: const BoxConstraints(),
+                                padding: EdgeInsets.zero,
+                                constraints: const BoxConstraints(),
 
-                                  onPressed: openMovieHomePage,
+                                onPressed: openMovieHomePage,
 
-                                  icon: CircleAvatar(
-                                    radius: AppTheme.lg,
-                                    backgroundColor: AppTheme.deepBlue.withOpacity(0.6),
-                                    child: FaIcon(
-                                      FontAwesomeIcons.link,
-                                      size: AppTheme.lg,
-                                      color: AppTheme.textOnMediumBlue,
-                                    ),
-                                  )
+                                icon: CircleAvatar(
+                                  radius: AppTheme.lg,
+                                  backgroundColor: AppTheme.deepBlue
+                                      .withOpacity(0.6),
+                                  child: FaIcon(
+                                    FontAwesomeIcons.link,
+                                    size: AppTheme.lg,
+                                    color: AppTheme.textOnMediumBlue,
+                                  ),
+                                ),
                               ),
 
                               const SizedBox(width: AppTheme.sm),
 
                               IconButton(
-                                  padding: EdgeInsets.zero,
-                                  constraints: const BoxConstraints(),
+                                padding: EdgeInsets.zero,
+                                constraints: const BoxConstraints(),
 
-                                  onPressed: openIMDBPage,
+                                onPressed: openIMDBPage,
 
-                                  icon: CircleAvatar(
-                                    radius: AppTheme.lg,
-                                    backgroundColor: AppTheme.deepBlue.withOpacity(0.6),
-                                    child: FaIcon(
-                                      FontAwesomeIcons.imdb,
-                                      size: AppTheme.lg,
-                                      color: AppTheme.textOnMediumBlue,
-                                    ),
-                                  )
+                                icon: CircleAvatar(
+                                  radius: AppTheme.lg,
+                                  backgroundColor: AppTheme.deepBlue
+                                      .withOpacity(0.6),
+                                  child: FaIcon(
+                                    FontAwesomeIcons.imdb,
+                                    size: AppTheme.lg,
+                                    color: AppTheme.textOnMediumBlue,
+                                  ),
+                                ),
                               ),
                             ],
                           ),
@@ -358,6 +442,111 @@ class _MoviePageState extends State<MoviePage> {
                           ),
 
                           SectionSeparator(),
+
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Expanded(
+                                child: Column(
+                                  children: [
+                                    TextField(
+                                      controller: commentController,
+                                      maxLines: null,
+                                      keyboardType: TextInputType.multiline,
+                                      style: AppTheme.h5SemiboldOnMediumBlue,
+                                      cursorColor: AppTheme.lightBlue,
+                                      decoration: InputDecoration(
+                                        hintText: "Write a review. . .",
+                                        hintStyle: AppTheme
+                                            .h5SemiboldOnMediumBlue
+                                            .copyWith(color: Colors.white38),
+                                        enabledBorder: UnderlineInputBorder(
+                                          borderSide: BorderSide(
+                                            color: Colors.white24,
+                                          ),
+                                        ),
+                                        focusedBorder: UnderlineInputBorder(
+                                          borderSide: BorderSide(
+                                            color: AppTheme.lightBlue,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+
+                                    SizedBox(height: AppTheme.sm),
+
+                                    Row(
+                                      children: [
+                                        // Decimal Rating Selector
+                                        Text(
+                                          "${currentRating.toStringAsFixed(1)} / 10",
+                                          style:
+                                              AppTheme.h6SemiboldOnMediumBlue,
+                                        ),
+                                        Expanded(
+                                          child: Slider(
+                                            value: currentRating,
+                                            min: 0,
+                                            max: 10,
+                                            divisions: 100,
+                                            // Allows for 0.1 increments
+                                            activeColor: AppTheme.lightBlue,
+                                            onChanged: (val) => setState(
+                                              () => currentRating = val,
+                                            ),
+                                          ),
+                                        ),
+
+                                        SizedBox(
+                                          width: 100, // Fixed width for the "Post" action
+                                          child: ElevatedButton(
+                                            style: ElevatedButton.styleFrom(
+                                              backgroundColor: AppTheme.deepBlue,
+                                              foregroundColor: AppTheme.lightBlue,
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.circular(AppTheme.sm),
+                                              ),
+                                              padding: const EdgeInsets.symmetric(
+                                                vertical: AppTheme.sm,
+                                              ),
+                                            ),
+                                            onPressed: isSubmitting ? null : submitReview,
+                                            child: isSubmitting
+                                                ? const SizedBox(
+                                              height: AppTheme.md,
+                                              width: AppTheme.md,
+                                              child: CircularProgressIndicator(
+                                                strokeWidth: 2,
+                                                color: AppTheme.lightBlue,
+                                              ),
+                                            )
+                                                : Text(
+                                              "Post",
+                                              style: AppTheme.h5SemiboldOnMediumBlue,
+                                            ),
+                                          ),
+                                        ),
+
+                                        // TextButton(
+                                        //   onPressed: isSubmitting
+                                        //       ? null
+                                        //       : submitReview,
+                                        //   child: Text(
+                                        //     "Post",
+                                        //     style: AppTheme.h5SemiboldOnMediumBlue,
+                                        //   ),
+                                        // ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+
+                          SizedBox(height: AppTheme.xl),
+
+                          ReviewSection(),
                         ],
                       ),
                     ),
@@ -370,6 +559,108 @@ class _MoviePageState extends State<MoviePage> {
           ),
         ],
       ),
+    );
+  }
+
+  Widget ReviewSection() {
+    if (loadedReviews.isEmpty && isLoadingMore) {
+      return LoadingScreen();
+    }
+    if (loadedReviews.isEmpty) {
+      return Center(
+        child: Padding(
+          padding: EdgeInsets.all(AppTheme.md),
+          child: Text(
+            "No reviews yet.",
+            style: AppTheme.h5SemiboldOnMediumBlue,
+          ),
+        ),
+      );
+    }
+
+    return Column(
+      children: [
+        ListView.builder(
+          shrinkWrap: true,
+          padding: EdgeInsets.zero,
+          physics: const NeverScrollableScrollPhysics(),
+          itemCount: loadedReviews.length,
+          itemBuilder: (context, index) =>
+              buildReviewItem(loadedReviews[index]),
+        ),
+        if (hasMore)
+          TextButton(
+            onPressed: isLoadingMore ? null : loadMore,
+            child: isLoadingMore
+                ? const SizedBox(
+                    height: AppTheme.md,
+                    width: AppTheme.md,
+                    child: LoadingScreen(),
+                  )
+                : const Text(
+                    "Load more reviews",
+                    style: TextStyle(color: AppTheme.lightBlue),
+                  ),
+          ),
+      ],
+    );
+  }
+
+  Widget buildReviewItem(Review review) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                    review.username,
+                    style: AppTheme.h3SemiboldOnMediumBlue
+                ),
+
+                const SizedBox(width: AppTheme.sm),
+
+                Text(
+                  dateFormatter.format(review.timestamp),
+                  style: AppTheme.h6SemiboldOnMediumBlue,
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Text(
+                  "${review.rating.toStringAsFixed(1)} / 10",
+                  style: AppTheme.h5SemiboldOnMediumBlue.copyWith(
+                    color: AppTheme.primaryYellow,
+                  ),
+                ),
+
+                SizedBox(width: AppTheme.sm),
+
+                Icon(
+                  Icons.star,
+                  color: AppTheme.primaryYellow,
+                  size: AppTheme.lg,
+                ),
+              ],
+            ),
+          ],
+        ),
+
+        SizedBox(height: AppTheme.md),
+
+        Text(review.content, style: AppTheme.h6SemiboldOnMediumBlue),
+
+        SizedBox(height: AppTheme.sm),
+
+        SectionSeparator(),
+
+        SizedBox(height: AppTheme.md),
+      ],
     );
   }
 }

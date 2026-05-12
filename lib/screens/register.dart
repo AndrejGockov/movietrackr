@@ -100,7 +100,7 @@ class _RegisterState extends State<Register> {
                 TextFormField(
                   controller: emailController,
                   style: AppTheme.h5SemiboldOnMediumBlue,
-                  keyboardType: TextInputType.emailAddress,
+
                   decoration: inputDecoration("Email", Icons.email),
                   validator: (value) {
                     if (value == null || value.trim().isEmpty)

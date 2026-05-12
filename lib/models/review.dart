@@ -18,7 +18,7 @@ class Review {
     'username': username,
     'content': content,
     'rating': rating,
-    'timestamp': timestamp.toIso8601String(),
+    'timestamp': timestamp.millisecondsSinceEpoch,
   };
 
   factory Review.fromJson(Map<String, dynamic> json) => Review(
@@ -26,6 +26,8 @@ class Review {
     username: json['username'],
     content: json['content'],
     rating: (json['rating'] as num).toDouble(),
-    timestamp: DateTime.parse(json['timestamp']),
+    timestamp: json['timestamp'] is int
+        ? DateTime.fromMillisecondsSinceEpoch(json['timestamp'])
+        : DateTime.parse(json['timestamp']),
   );
 }
