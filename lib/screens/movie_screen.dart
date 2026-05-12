@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:movietrackr/services/auth_service.dart';
+import 'package:movietrackr/widgets/movie_screen/movie_review_section.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../app_theme.dart';
@@ -536,7 +537,7 @@ class _MoviePageState extends State<MoviePage> {
                                         ),
 
                                         SizedBox(
-                                          width: 100, // Fixed width for the "Post" action
+                                          width: 100,
                                           child: ElevatedButton(
                                             style: ElevatedButton.styleFrom(
                                               backgroundColor: AppTheme.deepBlue,
@@ -564,16 +565,6 @@ class _MoviePageState extends State<MoviePage> {
                                             ),
                                           ),
                                         ),
-
-                                        // TextButton(
-                                        //   onPressed: isSubmitting
-                                        //       ? null
-                                        //       : submitReview,
-                                        //   child: Text(
-                                        //     "Post",
-                                        //     style: AppTheme.h5SemiboldOnMediumBlue,
-                                        //   ),
-                                        // ),
                                       ],
                                     ),
                                   ],
@@ -584,7 +575,14 @@ class _MoviePageState extends State<MoviePage> {
 
                           SizedBox(height: AppTheme.xl),
 
-                          ReviewSection(),
+                          // ReviewSection(),
+                          MovieReviews(
+                            reviews: loadedReviews,
+                            isLoadingMore: isLoadingMore,
+                            hasMore: hasMore,
+                            onLoadMore: loadMore,
+                            dateFormatter: dateFormatter,
+                          ),
                         ],
                       ),
                     ),
@@ -597,108 +595,6 @@ class _MoviePageState extends State<MoviePage> {
           ),
         ],
       ),
-    );
-  }
-
-  Widget ReviewSection() {
-    if (loadedReviews.isEmpty && isLoadingMore) {
-      return LoadingScreen();
-    }
-    if (loadedReviews.isEmpty) {
-      return Center(
-        child: Padding(
-          padding: EdgeInsets.all(AppTheme.md),
-          child: Text(
-            "No reviews yet.",
-            style: AppTheme.h5SemiboldOnMediumBlue,
-          ),
-        ),
-      );
-    }
-
-    return Column(
-      children: [
-        ListView.builder(
-          shrinkWrap: true,
-          padding: EdgeInsets.zero,
-          physics: const NeverScrollableScrollPhysics(),
-          itemCount: loadedReviews.length,
-          itemBuilder: (context, index) =>
-              buildReviewItem(loadedReviews[index]),
-        ),
-        if (hasMore)
-          TextButton(
-            onPressed: isLoadingMore ? null : loadMore,
-            child: isLoadingMore
-                ? const SizedBox(
-                    height: AppTheme.md,
-                    width: AppTheme.md,
-                    child: LoadingScreen(),
-                  )
-                : const Text(
-                    "Load more reviews",
-                    style: TextStyle(color: AppTheme.lightBlue),
-                  ),
-          ),
-      ],
-    );
-  }
-
-  Widget buildReviewItem(Review review) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text(
-                    review.username,
-                    style: AppTheme.h3SemiboldOnMediumBlue
-                ),
-
-                const SizedBox(width: AppTheme.sm),
-
-                Text(
-                  dateFormatter.format(review.timestamp),
-                  style: AppTheme.h6SemiboldOnMediumBlue,
-                ),
-              ],
-            ),
-            Row(
-              children: [
-                Text(
-                  "${review.rating.toStringAsFixed(1)} / 10",
-                  style: AppTheme.h5SemiboldOnMediumBlue.copyWith(
-                    color: AppTheme.primaryYellow,
-                  ),
-                ),
-
-                SizedBox(width: AppTheme.sm),
-
-                Icon(
-                  Icons.star,
-                  color: AppTheme.primaryYellow,
-                  size: AppTheme.lg,
-                ),
-              ],
-            ),
-          ],
-        ),
-
-        SizedBox(height: AppTheme.md),
-
-        Text(review.content, style: AppTheme.h6SemiboldOnMediumBlue),
-
-        SizedBox(height: AppTheme.sm),
-
-        SectionSeparator(),
-
-        SizedBox(height: AppTheme.md),
-      ],
     );
   }
 }
