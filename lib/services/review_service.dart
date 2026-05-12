@@ -36,4 +36,20 @@ class ReviewService {
         .get();
   }
 
+  Future<void> toggleWatchLater(String userId, int movieId) async {
+    final ref = _db.child('users/$userId/watch_later/$movieId');
+    final snapshot = await ref.get();
+
+    if (snapshot.exists) {
+      await ref.remove();
+      return;
+    }
+
+    await ref.set(true);
+  }
+
+  Future<bool> isInWatchLater(String userId, int movieId) async {
+    final snapshot = await _db.child('users/$userId/watch_later/$movieId').get();
+    return snapshot.exists;
+  }
 }

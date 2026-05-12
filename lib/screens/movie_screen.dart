@@ -32,6 +32,7 @@ class _MoviePageState extends State<MoviePage> {
   bool loadingMovie = true;
   late Movie movie;
   late Gallery gallery;
+  bool isInWatchLater = false;
 
   final TextEditingController commentController = TextEditingController();
   double currentRating = 5.0;
@@ -55,6 +56,7 @@ class _MoviePageState extends State<MoviePage> {
     movieId = ModalRoute.of(context)!.settings.arguments as int;
     loadMovie();
     fetchReviews();
+    checkWatchLaterStatus();
   }
 
   Future<void> loadMovie() async {
@@ -70,6 +72,25 @@ class _MoviePageState extends State<MoviePage> {
     } catch (e) {
       print(e);
     }
+  }
+
+  Future<void> checkWatchLaterStatus() async {
+    final String uid = authService.value.user?.uid ?? '';
+    if (uid.isEmpty) return;
+
+    final status = await ReviewService().isInWatchLater(uid, movieId);
+    setState(() => isInWatchLater = status);
+  }
+
+  Future<void> toggleWatchLater() async {
+    final String uid = authService.value.user?.uid ?? '';
+    if (uid.isEmpty) {
+      Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false);
+      return;
+    }
+
+    await ReviewService().toggleWatchLater(uid, movieId);
+    setState(() => isInWatchLater = !isInWatchLater);
   }
 
   Future<void> openIMDBPage() async {
@@ -119,7 +140,7 @@ class _MoviePageState extends State<MoviePage> {
         timestamp: DateTime.now(),
       );
 
-      await ReviewService.instance.postReview(movieId, newReview);
+      await ReviewService().postReview(movieId, newReview);
 
       commentController.clear();
       setState(() {
@@ -138,7 +159,7 @@ class _MoviePageState extends State<MoviePage> {
     if (isLoadingMore) return;
     setState(() => isLoadingMore = true);
 
-    final snapshot = await ReviewService.instance.getReviews(
+    final snapshot = await ReviewService().getReviews(
       movieId,
       currentLimit,
     );
@@ -321,7 +342,7 @@ class _MoviePageState extends State<MoviePage> {
                   // Back Button
                   Positioned(
                     top: 40,
-                    left: 16,
+                    left: AppTheme.md,
                     child: IconButton(
                       onPressed: () => Navigator.pop(context),
                       icon: CircleAvatar(
@@ -331,6 +352,23 @@ class _MoviePageState extends State<MoviePage> {
                           Icons.arrow_back_outlined,
                           size: AppTheme.lg,
                           color: AppTheme.textOnMediumBlue,
+                        ),
+                      ),
+                    ),
+                  ),
+
+                  Positioned(
+                    top: 40,
+                    right: AppTheme.md,
+                    child: IconButton(
+                      onPressed: toggleWatchLater,
+                      icon: CircleAvatar(
+                        radius: AppTheme.md,
+                        backgroundColor: AppTheme.deepBlue.withOpacity(0.8),
+                        child: Icon(
+                          isInWatchLater ? Icons.bookmark : Icons.bookmark_border,
+                          size: AppTheme.lg,
+                          color: isInWatchLater ? AppTheme.lightBlue : AppTheme.textOnMediumBlue,
                         ),
                       ),
                     ),
