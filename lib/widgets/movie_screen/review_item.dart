@@ -28,7 +28,7 @@ class ReviewItem extends StatelessWidget {
                   review.username,
                   style: AppTheme.h3SemiboldOnMediumBlue,
                 ),
-                const SizedBox(width: AppTheme.sm),
+                SizedBox(width: AppTheme.sm),
                 Text(
                   dateFormatter.format(review.timestamp),
                   style: AppTheme.h6SemiboldOnMediumBlue,
@@ -38,13 +38,13 @@ class ReviewItem extends StatelessWidget {
             Row(
               children: [
                 Text(
-                  "${review.rating.toStringAsFixed(1)} / 10",
+                  "${review.rating.toStringAsFixed(1)} / 10.0",
                   style: AppTheme.h5SemiboldOnMediumBlue.copyWith(
                     color: AppTheme.primaryYellow,
                   ),
                 ),
-                const SizedBox(width: AppTheme.sm),
-                const Icon(
+                SizedBox(width: AppTheme.sm),
+                Icon(
                   Icons.star,
                   color: AppTheme.primaryYellow,
                   size: AppTheme.lg,
@@ -53,11 +53,11 @@ class ReviewItem extends StatelessWidget {
             ),
           ],
         ),
-        const SizedBox(height: AppTheme.md),
+        SizedBox(height: AppTheme.md),
         Text(review.content, style: AppTheme.h6SemiboldOnMediumBlue),
-        const SizedBox(height: AppTheme.sm),
-        const SectionSeparator(),
-        const SizedBox(height: AppTheme.md),
+        SizedBox(height: AppTheme.sm),
+        SectionSeparator(),
+        SizedBox(height: AppTheme.md),
       ],
     );
   }

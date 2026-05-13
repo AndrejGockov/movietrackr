@@ -3,19 +3,15 @@ import 'package:movietrackr/services/auth_service.dart';
 
 import '../../../app_theme.dart';
 
-class CustomAppBar extends StatelessWidget implements PreferredSizeWidget{
+class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   const CustomAppBar({super.key});
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
       backgroundColor: AppTheme.deepBlue,
-      title: Text(
-        "MovieTrackr",
-        style: AppTheme.h1SemiboldOnMediumBlue,
-      ),
+      title: Text("MovieTrackr", style: AppTheme.h1SemiboldOnMediumBlue),
       actions: [
-
         ValueListenableBuilder(
           valueListenable: authService,
           builder: (context, authState, child) {
@@ -39,8 +35,11 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget{
             // If user IS logged in, show their email
             return Center(
               child: Padding(
-                padding: const EdgeInsets.only(right: 16.0),
-                child: Text(user.displayName ?? "User"),
+                padding: const EdgeInsets.only(right: AppTheme.md),
+                child: Text(
+                  user.displayName ?? "User",
+                  style: AppTheme.h5SemiboldOnMediumBlue,
+                ),
               ),
             );
           },

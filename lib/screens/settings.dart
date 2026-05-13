@@ -6,6 +6,7 @@ import '../widgets/settings_screen/sign_out_dialog.dart';
 import '../widgets/settings_screen/settings_button.dart';
 import '../widgets/settings_screen/update_username_dialog.dart';
 import '../widgets/shared/loading_screen.dart';
+import '../widgets/shared/reusable_header.dart';
 import '../widgets/shared/section_separator.dart';
 
 class Settings extends StatefulWidget {
@@ -97,12 +98,22 @@ class _SettingsState extends State<Settings> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                SizedBox(height: AppTheme.xl),
+
+                ReusableHeader(title: "Settings"),
+
                 // PROFILE SECTION
-                Text("Account", style: AppTheme.h2SemiboldOnMediumBlue),
+                SizedBox(height: AppTheme.md),
 
-                const SizedBox(height: AppTheme.xl),
+                Text("Profile", style: AppTheme.h2SemiboldOnMediumBlue),
 
-                Text("Username:", style: AppTheme.h5SemiboldOnMediumBlue),
+                SectionSeparator(),
+
+                SizedBox(height: AppTheme.sm),
+
+                Text("Username:", style: AppTheme.h4SemiboldOnMediumBlue),
+
+                SizedBox(height: AppTheme.sm),
 
                 Row(
                   children: [
@@ -110,7 +121,7 @@ class _SettingsState extends State<Settings> {
                       user.displayName ?? 'User',
                       style: AppTheme.h4SemiboldOnMediumBlue,
                     ),
-                    const SizedBox(width: AppTheme.sm),
+                    SizedBox(width: AppTheme.sm),
                     GestureDetector(
                       onTap: () =>
                           triggerUpdateUsernameFlow(user.displayName ?? ''),
@@ -127,17 +138,23 @@ class _SettingsState extends State<Settings> {
                   ],
                 ),
 
+                SizedBox(height: AppTheme.sm),
+
+                Text("Email:", style: AppTheme.h4SemiboldOnMediumBlue),
+
+                SizedBox(height: AppTheme.sm),
+
                 Text(
                   user.email ?? 'email',
                   style: AppTheme.h4SemiboldOnMediumBlue,
                 ),
 
-                const SizedBox(height: AppTheme.xl),
+                SizedBox(height: AppTheme.md),
 
                 // ACCOUNT SECTION
                 Text("Account", style: AppTheme.h2SemiboldOnMediumBlue),
 
-                const SectionSeparator(),
+                SectionSeparator(),
 
                 SettingsButton(
                   text: "Sign Out",

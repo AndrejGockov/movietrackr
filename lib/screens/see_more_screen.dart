@@ -3,6 +3,7 @@ import 'package:movietrackr/widgets/shared/loading_screen.dart';
 
 import '../app_theme.dart';
 import 'package:movietrackr/models/movie_cover.dart';
+import '../widgets/shared/reusable_header.dart';
 import '../widgets/shared/scrollable_movie_lists/shared/movie_grid.dart';
 
 import 'package:movietrackr/services/movies_service.dart';
@@ -69,30 +70,9 @@ class _SeeMorePageState extends State<SeeMorePage> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            const SizedBox(height: AppTheme.xxl),
+            const SizedBox(height: AppTheme.xl),
 
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                IconButton(
-                  onPressed: () => Navigator.pop(context),
-                  icon: CircleAvatar(
-                    radius: AppTheme.lg,
-                    backgroundColor: AppTheme.deepBlue.withOpacity(0.6),
-                    child: Icon(
-                      Icons.arrow_back_outlined,
-                      size: AppTheme.xl,
-                      color: AppTheme.textOnMediumBlue,
-                    ),
-                  ),
-                ),
-
-                const SizedBox(width: AppTheme.sm),
-
-                Text("$title Movies", style: AppTheme.h1SemiboldOnMediumBlue),
-              ],
-            ),
+            ReusableHeader(title: "$title Movies"),
 
             const SizedBox(height: AppTheme.sm),
 

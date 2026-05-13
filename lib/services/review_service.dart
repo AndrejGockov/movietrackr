@@ -52,4 +52,22 @@ class ReviewService {
     final snapshot = await _db.child('users/$userId/watch_later/$movieId').get();
     return snapshot.exists;
   }
+
+
+  Stream<Map<int, double>> reviewsStream(String uid) {
+    return _db.child('users/$uid/reviewed_movies').onValue.map((event) {
+      final data = event.snapshot.value as Map? ?? {};
+      return data.map((key, value) => MapEntry(
+          int.parse(key.toString()),
+          double.parse(value['rating'].toString())
+      ));
+    });
+  }
+
+  Stream<List<int>> watchLaterStream(String uid) {
+    return _db.child('users/$uid/watch_later').onValue.map((event) {
+      final data = event.snapshot.value as Map? ?? {};
+      return data.keys.map((key) => int.parse(key.toString())).toList();
+    });
+  }
 }

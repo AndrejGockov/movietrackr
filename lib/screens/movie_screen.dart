@@ -4,7 +4,6 @@ import 'package:intl/intl.dart';
 import 'package:movietrackr/services/auth_service.dart';
 import 'package:movietrackr/widgets/movie_screen/movie_review_section.dart';
 import 'package:url_launcher/url_launcher.dart';
-
 import '../app_theme.dart';
 import '../models/review.dart';
 import '../models/movie.dart';
@@ -518,7 +517,7 @@ class _MoviePageState extends State<MoviePage> {
                                       children: [
                                         // Decimal Rating Selector
                                         Text(
-                                          "${currentRating.toStringAsFixed(1)} / 10",
+                                          "${currentRating.toStringAsFixed(1)} / 10.0",
                                           style:
                                               AppTheme.h6SemiboldOnMediumBlue,
                                         ),
