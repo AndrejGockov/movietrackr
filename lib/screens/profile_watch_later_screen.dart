@@ -36,13 +36,13 @@ class _ProfileWatchLaterPageState extends State<ProfileWatchLaterPage> {
       allMovies = await Future.wait(
         ids.map((id) => TheMovieDBService().findMovieById(id)),
       );
-      if (mounted) _updatePage();
+      if (mounted) updatePage();
     } catch (e) {
       if (mounted) setState(() => loading = false);
     }
   }
 
-  void _updatePage() {
+  void updatePage() {
     setState(() {
       int start = (currentPage - 1) * itemsPerPage;
       int end = start + itemsPerPage;
@@ -75,7 +75,7 @@ class _ProfileWatchLaterPageState extends State<ProfileWatchLaterPage> {
             onPageChanged: (newPage) {
               setState(() {
                 currentPage = newPage;
-                _updatePage();
+                updatePage();
               });
             },
           ),

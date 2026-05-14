@@ -191,11 +191,10 @@ class _RegisterState extends State<Register> {
                             style: AppTheme.h5SemiboldLinkSecondary,
                             recognizer: TapGestureRecognizer()
                               ..onTap = () {
-                                Navigator.push(
+                                Navigator.pushNamedAndRemoveUntil(
                                   context,
-                                  MaterialPageRoute(
-                                    builder: (context) => const Login(),
-                                  ),
+                                  '/login',
+                                  (route) => false,
                                 );
                               },
                           ),

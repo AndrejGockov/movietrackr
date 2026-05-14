@@ -171,11 +171,10 @@ class _LoginState extends State<Login> {
                             style: AppTheme.h5SemiboldLinkSecondary,
                             recognizer: TapGestureRecognizer()
                               ..onTap = () {
-                                Navigator.push(
+                                Navigator.pushNamedAndRemoveUntil(
                                   context,
-                                  MaterialPageRoute(
-                                    builder: (context) => const Register(),
-                                  ),
+                                  '/register',
+                                  (route) => false,
                                 );
                               },
                           ),
@@ -196,11 +195,10 @@ class _LoginState extends State<Login> {
                         style: AppTheme.h5SemiboldLinkSecondary,
                         recognizer: TapGestureRecognizer()
                           ..onTap = () {
-                            Navigator.push(
+                            Navigator.pushNamedAndRemoveUntil(
                               context,
-                              MaterialPageRoute(
-                                builder: (context) => MainPage(),
-                              ),
+                              '/register',
+                              (route) => false,
                             );
                           },
                       ),
