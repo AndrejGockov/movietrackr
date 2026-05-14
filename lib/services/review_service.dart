@@ -79,4 +79,26 @@ class ReviewService {
       return data.keys.map((key) => int.parse(key.toString())).toList();
     });
   }
+
+  // Updates username in reviews
+  Future<void> updateUsernameInReviews(String uid, String newName) async {
+    final DatabaseReference reviewsRef = FirebaseDatabase.instance.ref('reviews');
+    final snapshot = await reviewsRef.get();
+
+    if (snapshot.exists) {
+      Map<dynamic, dynamic> allReviews = snapshot.value as Map;
+
+      Map<String, Object?> updates = {};
+
+      allReviews.forEach((movieId, userReviews) {
+        if (userReviews is Map && userReviews.containsKey(uid)) {
+          updates['$movieId/$uid/username'] = newName;
+        }
+      });
+
+      if (updates.isNotEmpty) {
+        await reviewsRef.update(updates);
+      }
+    }
+  }
 }

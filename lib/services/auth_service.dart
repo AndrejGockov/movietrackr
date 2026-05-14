@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:movietrackr/services/review_service.dart';
 
 ValueNotifier<AuthService> authService = ValueNotifier(AuthService());
 
@@ -46,6 +47,10 @@ class AuthService {
   Future<void> updateUsername({required String username}) async {
     await user!.updateDisplayName(username);
     await user!.reload();
+
+    // Update the users name in all their reviews
+    await ReviewService().updateUsernameInReviews(user!.uid, username);
+
     authService.value = this;
     authService.notifyListeners();
   }
