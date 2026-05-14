@@ -91,6 +91,21 @@ class _SearchTabState extends State<SearchTab> {
                     });
                   },
                 ),
+              ]else ...[
+                Padding(
+                  padding: const EdgeInsets.only(top: AppTheme.xxl),
+                  child: Center(
+                    child: Text(
+                      controller.text.isEmpty
+                          ? "Search and discover new cinematic experiences"
+                          : "No results found for \"${controller.text}\"",
+                      textAlign: TextAlign.center,
+                      style: AppTheme.h4SemiboldOnMediumBlue.copyWith(
+                        color: AppTheme.textOnMediumBlue.withOpacity(0.6),
+                      ),
+                    ),
+                  ),
+                ),
               ],
             ],
           ),
