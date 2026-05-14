@@ -66,11 +66,11 @@ class _ProfileTabState extends State<ProfileTab> {
         slivers: [
           SliverToBoxAdapter(
             child: Padding(
-              padding: EdgeInsets.all(AppTheme.lg),
+              padding: const EdgeInsets.all(AppTheme.lg),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(height: AppTheme.xxl),
+                  const SizedBox(height: AppTheme.xxl),
 
                   ValueListenableBuilder(
                     valueListenable: authService,
@@ -84,33 +84,36 @@ class _ProfileTabState extends State<ProfileTab> {
                     },
                   ),
 
-                  SizedBox(height: AppTheme.xl),
+                  const SizedBox(height: AppTheme.xl),
 
                   ReviewStats(ratings: reviewedMovies.values.toList()),
 
-                  SizedBox(height: AppTheme.md),
+                  const SizedBox(height: AppTheme.md),
 
                   GenreStats(movies: reviewedMovies.keys.toList()),
 
-                  SizedBox(height: AppTheme.xxl),
+                  const SizedBox(height: AppTheme.xxl),
 
                   ProfileMoviesSection(
                     title: "Ratings",
-                    path: "reviews",
+                    path: "/profile_reviews",
                     items: reviewedMovies.entries.toList(),
-                    builder: (entry) => ProfileMovieCard(movie: entry.key, userRating: entry.value),
+                    builder: (entry) => ProfileMovieCard(
+                      movie: entry.key,
+                      userRating: entry.value,
+                    ),
                   ),
 
-                  SizedBox(height: AppTheme.xl),
+                  const SizedBox(height: AppTheme.xl),
 
                   ProfileMoviesSection(
                     title: "Watch Later",
-                    path: "watch_later",
+                    path: "/profile_watch_later",
                     items: watchLaterMovies,
                     builder: (movie) => ProfileMovieCard(movie: movie),
                   ),
 
-                  SizedBox(height: AppTheme.sm),
+                  const SizedBox(height: AppTheme.sm),
                 ],
               ),
             ),

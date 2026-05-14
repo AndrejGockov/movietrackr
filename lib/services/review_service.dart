@@ -1,8 +1,9 @@
 import 'package:firebase_database/firebase_database.dart';
+
 import '../models/review.dart';
+import 'db_context.dart';
 
 class ReviewService {
-  late final DatabaseReference _db = FirebaseDatabase.instance.ref();
 
   ReviewService._privateConstructor();
 
@@ -25,19 +26,27 @@ class ReviewService {
       },
     };
 
-    await _db.update(updates);
+    await dbContext.update(updates);
   }
 
   Future<DataSnapshot> getReviews(int movieId, int limit) async {
-    return await _db.child("reviews")
+    return await dbContext.child("reviews")
         .child(movieId.toString())
         .orderByChild('timestamp')
         .limitToLast(limit)
         .get();
   }
 
+  Future<void> deleteReview(int movieId, String userId) async {
+    final updates = <String, dynamic>{
+      'reviews/$movieId/$userId': null,
+      'users/$userId/reviewed_movies/$movieId': null,
+    };
+    await dbContext.update(updates);
+  }
+
   Future<void> toggleWatchLater(String userId, int movieId) async {
-    final ref = _db.child('users/$userId/watch_later/$movieId');
+    final ref = dbContext.child('users/$userId/watch_later/$movieId');
     final snapshot = await ref.get();
 
     if (snapshot.exists) {
@@ -49,13 +58,13 @@ class ReviewService {
   }
 
   Future<bool> isInWatchLater(String userId, int movieId) async {
-    final snapshot = await _db.child('users/$userId/watch_later/$movieId').get();
+    final snapshot = await dbContext.child('users/$userId/watch_later/$movieId').get();
     return snapshot.exists;
   }
 
 
   Stream<Map<int, double>> reviewsStream(String uid) {
-    return _db.child('users/$uid/reviewed_movies').onValue.map((event) {
+    return dbContext.child('users/$uid/reviewed_movies').onValue.map((event) {
       final data = event.snapshot.value as Map? ?? {};
       return data.map((key, value) => MapEntry(
           int.parse(key.toString()),
@@ -65,7 +74,7 @@ class ReviewService {
   }
 
   Stream<List<int>> watchLaterStream(String uid) {
-    return _db.child('users/$uid/watch_later').onValue.map((event) {
+    return dbContext.child('users/$uid/watch_later').onValue.map((event) {
       final data = event.snapshot.value as Map? ?? {};
       return data.keys.map((key) => int.parse(key.toString())).toList();
     });

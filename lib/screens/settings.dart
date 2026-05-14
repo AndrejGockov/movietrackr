@@ -149,6 +149,35 @@ class _SettingsState extends State<Settings> {
                   style: AppTheme.h4SemiboldOnMediumBlue,
                 ),
 
+                SizedBox(height: AppTheme.sm),
+
+                Text("Username:", style: AppTheme.h4SemiboldOnMediumBlue),
+
+                SizedBox(height: AppTheme.sm),
+
+                Row(
+                  children: [
+                    Text(
+                      user.displayName ?? 'User',
+                      style: AppTheme.h4SemiboldOnMediumBlue,
+                    ),
+                    SizedBox(width: AppTheme.sm),
+                    GestureDetector(
+                      onTap: () =>
+                          triggerUpdateUsernameFlow(user.displayName ?? ''),
+                      child: CircleAvatar(
+                        radius: AppTheme.md,
+                        backgroundColor: AppTheme.deepBlue.withOpacity(0.6),
+                        child: Icon(
+                          Icons.edit,
+                          size: AppTheme.md,
+                          color: AppTheme.textOnMediumBlue,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+
                 SizedBox(height: AppTheme.md),
 
                 // ACCOUNT SECTION

@@ -17,7 +17,7 @@ class Register extends StatefulWidget {
 
 class _RegisterState extends State<Register> {
   final _formKey = GlobalKey<FormState>();
-  bool _isPasswordVisible = true;
+  bool isPasswordVisible = true;
   String errorMessage = '';
 
   final TextEditingController usernameController = TextEditingController();
@@ -117,17 +117,17 @@ class _RegisterState extends State<Register> {
                 TextFormField(
                   controller: passwordController,
                   style: AppTheme.h5SemiboldOnMediumBlue,
-                  obscureText: _isPasswordVisible,
+                  obscureText: isPasswordVisible,
                   decoration: inputDecoration("Password", Icons.lock).copyWith(
                     suffixIcon: IconButton(
                       icon: Icon(
-                        _isPasswordVisible
+                        isPasswordVisible
                             ? Icons.visibility_off
                             : Icons.visibility,
                         color: AppTheme.lightBlue,
                       ),
                       onPressed: () => setState(
-                        () => _isPasswordVisible = !_isPasswordVisible,
+                        () => isPasswordVisible = !isPasswordVisible,
                       ),
                     ),
                   ),

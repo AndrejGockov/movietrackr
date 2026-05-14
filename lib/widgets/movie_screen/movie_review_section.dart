@@ -11,6 +11,8 @@ class MovieReviews extends StatelessWidget {
   final bool hasMore;
   final VoidCallback onLoadMore;
   final DateFormat dateFormatter;
+  final Function(Review) onDelete;
+  final Function(Review) onEdit;
 
   const MovieReviews({
     super.key,
@@ -19,6 +21,8 @@ class MovieReviews extends StatelessWidget {
     required this.hasMore,
     required this.onLoadMore,
     required this.dateFormatter,
+    required this.onDelete,
+    required this.onEdit,
   });
 
   @override
@@ -49,6 +53,9 @@ class MovieReviews extends StatelessWidget {
           itemBuilder: (context, index) => ReviewItem(
             review: reviews[index],
             dateFormatter: dateFormatter,
+            // Trigger the parent functions
+            onDelete: () => onDelete(reviews[index]),
+            onEdit: () => onEdit(reviews[index]),
           ),
         ),
         if (hasMore)

@@ -93,6 +93,12 @@ class AppTheme{
     color: primaryRed,
   );
 
+  static TextStyle h5SemiboldPrimaryRed = GoogleFonts.montserrat(
+    fontSize: 14,
+    fontWeight: FontWeight.w600,
+    color: primaryRed,
+  );
+
   static TextStyle h6SemiboldPrimaryRed = GoogleFonts.montserrat(
     fontSize: 12,
     fontWeight: FontWeight.w600,

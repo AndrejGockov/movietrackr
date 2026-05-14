@@ -24,7 +24,6 @@ class ProfileMoviesSection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // Section Title Header
         Row(
           children: [
             Text(title, style: AppTheme.h2SemiboldOnMediumBlue),
@@ -40,28 +39,22 @@ class ProfileMoviesSection extends StatelessWidget {
         const SectionSeparator(),
         const SizedBox(height: AppTheme.md),
 
-        // Content
         if (items.isEmpty) const EmptySection(),
         ...displayItems.map((item) => builder(item)).toList(),
 
-        // See More Button
         if (items.length > 5)
           Center(
             child: ElevatedButton(
               onPressed: () => Navigator.pushNamed(
                 context,
-                "/profile_movies",
-                arguments: {
-                  'title': title,
-                  'path': path
-                },
+                path,
               ),
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppTheme.deepBlue.withOpacity(0.6),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(AppTheme.md),
                 ),
-                padding: EdgeInsets.symmetric(
+                padding: const EdgeInsets.symmetric(
                   horizontal: AppTheme.md,
                   vertical: AppTheme.sm,
                 ),
@@ -70,7 +63,7 @@ class ProfileMoviesSection extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text("See More", style: AppTheme.h4SemiboldOnMediumBlue),
-                  SizedBox(width: AppTheme.sm),
+                  const SizedBox(width: AppTheme.sm),
                   Icon(
                     Icons.keyboard_double_arrow_down,
                     size: AppTheme.lg,

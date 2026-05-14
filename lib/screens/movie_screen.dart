@@ -8,6 +8,7 @@ import '../app_theme.dart';
 import '../models/review.dart';
 import '../models/movie.dart';
 import '../models/gallery.dart';
+import '../widgets/movie_screen/delete_review_dialog.dart';
 import '../widgets/movie_screen/movie_details_section.dart';
 import '../widgets/movie_screen/movie_info_section.dart';
 import '../widgets/movie_screen/movie_gallery_section.dart';
@@ -72,6 +73,13 @@ class _MoviePageState extends State<MoviePage> {
     } catch (e) {
       print(e);
     }
+  }
+
+  void loadMore() {
+    setState(() {
+      currentLimit += 10;
+    });
+    fetchReviews();
   }
 
   Future<void> checkWatchLaterStatus() async {
@@ -159,35 +167,66 @@ class _MoviePageState extends State<MoviePage> {
     if (isLoadingMore) return;
     setState(() => isLoadingMore = true);
 
-    final snapshot = await ReviewService().getReviews(
-      movieId,
-      currentLimit,
-    );
+    final snapshot = await ReviewService().getReviews(movieId, currentLimit);
 
     if (snapshot.exists) {
       final Map<dynamic, dynamic> data = snapshot.value as Map;
-      final List<Review> fetched =
-          data.values
-              .map((item) => Review.fromJson(Map<String, dynamic>.from(item)))
-              .toList()
-            ..sort((a, b) => b.timestamp.compareTo(a.timestamp));
+      final List<Review> fetched = data.values
+          .map((item) => Review.fromJson(Map<String, dynamic>.from(item)))
+          .toList()
+        ..sort((a, b) => b.timestamp.compareTo(a.timestamp));
 
       setState(() {
         loadedReviews = fetched;
-        // If we got fewer than the limit, we reached the end
         hasMore = fetched.length == currentLimit;
         isLoadingMore = false;
       });
     } else {
-      setState(() => isLoadingMore = false);
+      // HIGHLIGHT: Ensure list is cleared if no reviews exist on the server
+      setState(() {
+        loadedReviews = [];
+        isLoadingMore = false;
+      });
     }
   }
 
-  void loadMore() {
+  void editReview(Review review) {
     setState(() {
-      currentLimit += 10;
+      commentController.text = review.content;
+      currentRating = review.rating;
     });
-    fetchReviews();
+  }
+
+  Future<void> deleteReview(Review review) async {
+    final confirm = await showDialog<bool>(
+      context: context,
+      builder: (ctx) => const DeleteReviewDialog(),
+    );
+
+    if (confirm == true) {
+      // 1. Save a backup of the current list in case the API call fails
+      final backupList = List<Review>.from(loadedReviews);
+
+      try {
+        // 2. HIGHLIGHT: Update UI immediately (Optimistic Update)
+        setState(() {
+          loadedReviews.removeWhere((item) =>
+          item.userId == review.userId && item.timestamp == review.timestamp
+          );
+        });
+
+        // 3. Perform the actual background deletion
+        await ReviewService().deleteReview(movieId, review.userId);
+        Snackbars.showSuccessSnackbar(context, "Review deleted");
+
+      } catch (e) {
+        // 4. HIGHLIGHT: Rollback logic - if the database fails, the review reappears
+        setState(() {
+          loadedReviews = backupList;
+        });
+        Snackbars.showErrorSnackbar(context, "Failed to delete review");
+      }
+    }
   }
 
   @override
@@ -574,13 +613,14 @@ class _MoviePageState extends State<MoviePage> {
 
                           SizedBox(height: AppTheme.xl),
 
-                          // ReviewSection(),
                           MovieReviews(
                             reviews: loadedReviews,
                             isLoadingMore: isLoadingMore,
                             hasMore: hasMore,
                             onLoadMore: loadMore,
                             dateFormatter: dateFormatter,
+                            onDelete: deleteReview,
+                            onEdit: editReview,
                           ),
                         ],
                       ),

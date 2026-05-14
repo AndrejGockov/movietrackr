@@ -5,7 +5,8 @@ import 'package:movietrackr/screens/login.dart';
 
 import 'package:movietrackr/screens/main_screen.dart';
 import 'package:movietrackr/screens/movie_screen.dart';
-import 'package:movietrackr/screens/profile_movies_screen.dart';
+import 'package:movietrackr/screens/profile_reviews_screen.dart';
+import 'package:movietrackr/screens/profile_watch_later_screen.dart';
 import 'package:movietrackr/screens/register.dart';
 import 'package:movietrackr/screens/see_more_screen.dart';
 import 'package:movietrackr/screens/settings.dart';
@@ -55,7 +56,8 @@ class MyApp extends StatelessWidget {
         "/register" : (context) => const Register(),
         "/login" : (context) => const Login(),
         "/settings" : (context) => const Settings(),
-        "/profile_movies" : (context) => const ProfileMoviesScreen()
+        "/profile_reviews" : (context) => const ProfileReviewsPage(),
+        "/profile_watch_later" : (context) => const ProfileWatchLaterPage(),
       },
     );
   }
