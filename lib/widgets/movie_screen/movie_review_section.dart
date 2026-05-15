@@ -65,10 +65,7 @@ class MovieReviews extends StatelessWidget {
                 ? const SizedBox(
               height: AppTheme.md,
               width: AppTheme.md,
-              child: CircularProgressIndicator(
-                strokeWidth: 2,
-                color: AppTheme.lightBlue,
-              ),
+              child: LoadingScreen(),
             )
                 : const Text(
               "Load more reviews",

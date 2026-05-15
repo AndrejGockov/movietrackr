@@ -4,6 +4,7 @@ import '../../models/movie.dart';
 import '../../services/auth_service.dart';
 import '../../services/movies_service.dart';
 import '../../services/review_service.dart';
+import '../../services/user_service.dart';
 import '../profile/genre_stats.dart';
 import '../profile/profile_header.dart';
 import '../profile/profile_movie_card.dart';
@@ -33,6 +34,10 @@ class _ProfileTabState extends State<ProfileTab> {
   void _setupListeners() {
     final uid = authService.value.user?.uid ?? '';
     if (uid.isEmpty) return;
+
+    UserService().getBioStream(uid).listen((newBio) {
+      if (mounted) setState(() => bio = newBio);
+    });
 
     // Listen to Watch Later updates
     ReviewService().watchLaterStream(uid).listen((ids) async {

@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:movietrackr/services/review_service.dart';
+import 'package:movietrackr/services/user_service.dart';
 
 ValueNotifier<AuthService> authService = ValueNotifier(AuthService());
 
@@ -39,6 +40,7 @@ class AuthService {
     if(userCredential.user != null){
       await userCredential.user!.updateDisplayName(username);
       await userCredential.user!.reload();
+      UserService().updateBio(userCredential.user!.uid ,"");
     }
 
     return userCredential;
@@ -69,6 +71,8 @@ class AuthService {
     );
 
     await user!.reauthenticateWithCredential(credential);
+    // Delete all the users data (reviews, watch later)
+    await UserService().deleteUserAccount(user!.uid);
     await user!.delete();
     await firebaseAuth.signOut();
   }

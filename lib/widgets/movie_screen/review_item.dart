@@ -32,11 +32,11 @@ class ReviewItem extends StatelessWidget {
           children: [
             Row(
               children: [
-                Text(review.username, style: AppTheme.h3SemiboldOnMediumBlue),
-                const SizedBox(width: AppTheme.sm),
                 Text(
-                  dateFormatter.format(review.timestamp),
-                  style: AppTheme.h6SemiboldOnMediumBlue,
+                  review.username.length <= 30
+                      ? review.username
+                      : review.username.substring(0, 30),
+                  style: AppTheme.h3SemiboldOnMediumBlue,
                 ),
               ],
             ),
@@ -48,7 +48,7 @@ class ReviewItem extends StatelessWidget {
                     color: AppTheme.primaryYellow,
                   ),
                 ),
-                const SizedBox(width: AppTheme.sm),
+                const SizedBox(width: AppTheme.xxs),
                 const Icon(
                   Icons.star,
                   color: AppTheme.primaryYellow,
@@ -107,6 +107,12 @@ class ReviewItem extends StatelessWidget {
               ],
             ),
           ],
+        ),
+        Text(
+          dateFormatter.format(review.timestamp),
+          style: AppTheme.h6SemiboldOnMediumBlue.copyWith(
+            color: AppTheme.lightBlue,
+          ),
         ),
         const SizedBox(height: AppTheme.md),
         Text(review.content, style: AppTheme.h6SemiboldOnMediumBlue),
