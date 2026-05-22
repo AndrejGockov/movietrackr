@@ -6,13 +6,17 @@ Movietrackr is an app for saving, rating and writing reviewing for your favorite
 ## Screenshots
 ---
 <p align="center">
-<img src="/images/home_page.jpg" alt="Home Page" width="50%" height="50%">
-<img src="/images/seach_page.jpg" alt="Home Page" width="50%" height="50%">
-<img src="/images/movie_details_page.jpg" alt="Home Page"width="50%" height="50%">
-<img src="/images/movie_details_page_2.jpg" alt="Home Page" width="50%" height="50%">
-<img src="/images/movie_details_page_3.jpg" alt="Home Page" width="50%" height="50%">
-<img src="/images/profile_page.jpg" alt="Home Page" width="50%" height="50%">
-<img src="/images/profile_page.jpg" alt="Home Page" width="50%" height="50%">
+<table>
+    <tr>
+    <td><img src="/images/home_page.jpg" alt="Home Page" width="25%" height="25%">
+    <td><img src="/images/seach_page.jpg" alt="Home Page" width="25%" height="25%">
+  </tr>
+</table>
+<img src="/images/movie_details_page.jpg" alt="Home Page" width="25%" height="25%">
+<img src="/images/movie_details_page_2.jpg" alt="Home Page" width="25%" height="25%">
+<img src="/images/movie_details_page_3.jpg" alt="Home Page" width="25%" height="25%">
+<img src="/images/profile_page.jpg" alt="Home Page" width="25%" height="25%">
+<img src="/images/profile_page_watch_later.jpg" alt="Home Page" width="25%" height="25%">
 </p>
 
 ## Features
