@@ -5,8 +5,14 @@ Movietrackr is an app for saving, rating and writing reviewing for your favorite
 
 ## Screenshots
 ---
-<p>
+<p align="center">
 <img src="/images/home_page.jpg" alt="Home Page">
+<img src="/images/seach_page.jpg" alt="Home Page">
+<img src="/images/movie_details_page.jpg" alt="Home Page">
+<img src="/images/movie_details_page_2.jpg" alt="Home Page">
+<img src="/images/movie_details_page_3.jpg" alt="Home Page">
+<img src="/images/profile_page.jpg" alt="Home Page">
+<img src="/images/profile_page.jpg" alt="Home Page">
 </p>
 
 ## Features
