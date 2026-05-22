@@ -1,7 +1,7 @@
 <p align="center">
     <img src="/assets/icons/icon.png" alt="Home Page" width="256" height="256">
 </p>
-<h1>
+<h1 align="center">
 movietrackr
 </h1>
 
