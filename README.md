@@ -5,18 +5,21 @@ Movietrackr is an app for saving, rating and writing reviewing for your favorite
 
 ## Screenshots
 
-<p align="center">
-  <img src="/images/home_page.jpg" alt="Home Page" width="35%">
-  <img src="/images/seach_page.jpg" alt="Search Page" width="35%">
+<p align="left">
+  <img src="/images/home_page.jpg" alt="Home Page" width="40%">
+  <img src="/images/seach_page.jpg" alt="Search Page" width="40%">
   <br><br>
-  <img src="/images/movie_details_page.jpg" alt="Movie Details 1" width="35%">
-  <img src="/images/movie_details_page_2.jpg" alt="Movie Details 2" width="35%">
+  <img src="/images/movie_details_page.jpg" alt="Movie Details 1" width="40%">
+  <img src="/images/movie_details_page_2.jpg" alt="Movie Details 2" width="40%">
   <br><br>
-  <img src="/images/movie_details_page_3.jpg" alt="Movie Details 3" width="35%">
-  <img src="/images/movie_details_page_4.jpg" alt="Movie Details 3" width="35%">
+  <img src="/images/movie_details_page_3.jpg" alt="Movie Details 3" width="40%">
+  <img src="/images/movie_details_page_4.jpg" alt="Movie Details 4" width="40%">
   <br><br>
-  <img src="/images/profile_page.jpg" alt="Profile Page" width="35%">
-  <img src="/images/profile_page_watch_later.jpg" alt="Watch Later" width="35%">
+  <img src="/images/profile_page.jpg" alt="Profile Page" width="40%">
+  <img src="/images/profile_page_ratings.jpg" alt="Ratings" width="40%">
+  <br><br>
+  <img src="/images/profile_page_watch_later.jpg" alt="Watch Later" width="40%">
+  <img src="/images/watch_later_page.jpg" alt="Watch Later" width="40%">
 </p>
 
 ## Features
