@@ -1,25 +1,25 @@
 # movietrackr
----
+
 
 Movietrackr is an app for saving, rating and writing reviewing for your favorite movies using TheMovieDB API and Firebase.
 
 ## Screenshots
----
+
 <p align="center">
-  <img src="/images/home_page.jpg" alt="Home Page" width="33%">
-  <img src="/images/seach_page.jpg" alt="Search Page" width="33%">
+  <img src="/images/home_page.jpg" alt="Home Page" width="35%">
+  <img src="/images/seach_page.jpg" alt="Search Page" width="35%">
   <br><br>
-  <img src="/images/movie_details_page.jpg" alt="Movie Details 1" width="33%">
-  <img src="/images/movie_details_page_2.jpg" alt="Movie Details 2" width="33%">
+  <img src="/images/movie_details_page.jpg" alt="Movie Details 1" width="35%">
+  <img src="/images/movie_details_page_2.jpg" alt="Movie Details 2" width="35%">
   <br><br>
-  <img src="/images/movie_details_page_3.jpg" alt="Movie Details 3" width="33%">
-  <img src="/images/profile_page.jpg" alt="Profile Page" width="33%">
+  <img src="/images/movie_details_page_3.jpg" alt="Movie Details 3" width="35%">
+  <img src="/images/movie_details_page_4.jpg" alt="Movie Details 3" width="35%">
   <br><br>
-  <img src="/images/profile_page_watch_later.jpg" alt="Watch Later" width="33%">
+  <img src="/images/profile_page.jpg" alt="Profile Page" width="35%">
+  <img src="/images/profile_page_watch_later.jpg" alt="Watch Later" width="35%">
 </p>
 
 ## Features
----
 
 - Authentication with Firebase
 - Posting reviews on movies
@@ -52,16 +52,16 @@ Movietrackr is an app for saving, rating and writing reviewing for your favorite
 | [flutter_native_splash](https://pub.dev/packages/flutter_native_splash)   | Native splash for when opening the app |
 
 ## Design Patterns
----
+
 - Singleton - objects that communicate with TheMovieDB API and 
 - MVC - folder structure and separation of roles
 
 ## License
----
+
 This project is licensed under the terms of the [MIT license](LICENSE).
 
 ## Installing and running
----
+
 1. Clone the repository
 2. Register an account on [TheMovieDB](https://www.themoviedb.org) and create your API Key.
 3. Create a .env file in the root directory and add the your API Key:
