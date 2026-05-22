@@ -5,7 +5,6 @@
 movietrackr
 </h1>
 
-<br><br>
 Movietrackr is an app for saving, rating and writing reviewing for your favorite movies using TheMovieDB API and Firebase.
 
 ## Screenshots
