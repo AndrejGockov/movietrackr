@@ -1,5 +1,5 @@
 <p align="center">
-    <img src="/assets/icons/icon.png" alt="Home Page" width="1024" height="1024">
+    <img src="/assets/icons/icon.png" alt="Home Page" width="512" height="512">
 </p>
 <h1 align="center">
 movietrackr
