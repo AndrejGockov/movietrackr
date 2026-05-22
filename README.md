@@ -1,8 +1,9 @@
-
 <p align="center">
-    <img src="/assets/icons/icon.png" alt="App Icon">
-    # movietrackr
+    <img src="/assets/icons/icon.png" alt="Home Page" width="1024" height="1024">
 </p>
+<h1 align="center">
+movietrackr
+</h1>
 
 Movietrackr is an app for saving, rating and writing reviewing for your favorite movies using TheMovieDB API and Firebase.
 
