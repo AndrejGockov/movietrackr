@@ -5,6 +5,7 @@
 movietrackr
 </h1>
 
+<br><br>
 Movietrackr is an app for saving, rating and writing reviewing for your favorite movies using TheMovieDB API and Firebase.
 
 ## Screenshots
@@ -59,7 +60,7 @@ Movietrackr is an app for saving, rating and writing reviewing for your favorite
 
 ## Design Patterns
 
-- Singleton - objects that communicate with TheMovieDB API and 
+- Singleton - for objects that communicate with TheMovieDB API and Firebase
 - MVC - folder structure and separation of roles
 
 ## License
