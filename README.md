@@ -1,5 +1,8 @@
-# movietrackr
 
+<p align="center">
+    <img src="/assets/icons/icon.png" alt="App Icon">
+    # movietrackr
+</p>
 
 Movietrackr is an app for saving, rating and writing reviewing for your favorite movies using TheMovieDB API and Firebase.
 
@@ -36,7 +39,6 @@ Movietrackr is an app for saving, rating and writing reviewing for your favorite
 - Opening other apps from links (YouTube, Browsers)
 
 ## Packages
----
 
 | Package                                                                   | Usage                                  |
 |---------------------------------------------------------------------------|----------------------------------------|
