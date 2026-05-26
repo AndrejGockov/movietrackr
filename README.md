@@ -60,7 +60,6 @@ Movietrackr is an app for saving, rating and writing reviewing for your favorite
 ## Design Patterns
 
 - Singleton - for objects that communicate with TheMovieDB API and Firebase
-- MVC - folder structure and separation of roles
 
 ## License
 
